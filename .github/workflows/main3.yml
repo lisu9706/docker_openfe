@@ -1,0 +1,23 @@
+name: main3
+
+on:
+  workflow_dispatch: # 注意：这里前面有两个空格
+
+jobs:
+  download-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Docker Image
+        run: |
+          docker pull ghcr.io/openfreeenergy/openfe:1.11.1-apptainer
+
+      - name: Save Image to Tar
+        run: |
+          docker save ghcr.io/openfreeenergy/openfe:1.11.1-apptainer | gzip > openfe_1.11.1.tar.gz
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openfe-image-package
+          path: openfe_1.11.1.tar.gz
+          retention-days: 1
