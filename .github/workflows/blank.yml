@@ -1,25 +1,23 @@
 name: Docker Image Downloader
 
 on:
-  workflow_dispatch: # 允许你手动点击按钮触发任务
+  workflow_dispatch: # 注意：这里前面有两个空格
 
 jobs:
-  download-and-pack:
+  download-job:
     runs-on: ubuntu-latest
     steps:
       - name: Pull Docker Image
         run: |
-          # 拉取目标镜像
           docker pull ghcr.io/openfreeenergy/openfe:1.11.1-apptainer
-          
+
       - name: Save Image to Tar
         run: |
-          # 将镜像导出为 tar 包
-          docker save ghcr.io/openfreeenergy/openfe:1.11.1-apptainer -o openfe.tar
-          
+          docker save ghcr.io/openfreeenergy/openfe:1.11.1-apptainer | gzip > openfe_1.11.1.tar.gz
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: openfe-package  # 下载时的压缩包文件名
-          path: openfe.tar      # 要上传的文件
-          retention-days: 1     # 自动保存天数，下载完就会过期，节省空间
+          name: openfe-image-package
+          path: openfe_1.11.1.tar.gz
+          retention-days: 1
