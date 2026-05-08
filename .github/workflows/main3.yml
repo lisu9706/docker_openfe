@@ -1,4 +1,4 @@
-name: main3
+name: Docker Image Downloader
 
 on:
   workflow_dispatch: # 注意：这里前面有两个空格
