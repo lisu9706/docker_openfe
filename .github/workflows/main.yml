@@ -1,0 +1,13 @@
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull and Save Docker Image
+        run: |
+          docker pull ghcr.io/openfreeenergy/openfe:1.11.1-apptainer
+          docker save ghcr.io/openfreeenergy/openfe:1.11.1-apptainer -o openfe.tar
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openfe-image
+          path: openfe.tar
